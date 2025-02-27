@@ -2,13 +2,13 @@
 
 This repo hosts the minimal files for pacscript MIME integration on desktop environments.
 
-Dependencies:
+### Dependencies
 - `xdg-utils`
 - `desktop-file-utils`
 - `shared-mime-info`
 - `gtk-update-icon-cache` (GTK-based environments only)
 
-Installation:
+### Installation
 ```bash
 # Create directories
 MIMEDIR="/usr/share/mime"
@@ -30,8 +30,7 @@ fi
 
 # Set as default MIME type
 if ! { [[ -f "${APPDIR}/mimeapps.list" ]] && \
-    grep -q '^application/x-pacscript=' "${APPDIR}/mimeapps.list";
-  }; then
+  grep -q '^application/x-pacscript=' "${APPDIR}/mimeapps.list"; }; then
     { ! [[ -f "${APPDIR}/mimeapps.list" ]] && echo -e '\n[Default Applications]';
       echo 'application/x-pacscript=pacscript.desktop';
     } | sudo tee -a "${APPDIR}/mimeapps.list" > /dev/null
