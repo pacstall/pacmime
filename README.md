@@ -17,11 +17,18 @@ sudo mkdir -p "${ICONDIR}/scalable/mimetypes" "${MIMEDIR}/packages" "${APPDIR}"
 sudo install -Dm644 "application-x-pacscript.svg" -t "${ICONDIR}/scalable/mimetypes"
 sudo install -Dm644 "pacscript.xml" -t "${MIMEDIR}/packages"
 sudo install -Dm644 "pacscript.desktop" -t "${APPDIR}"
+
 sudo update-mime-database "${MIMEDIR}" 2>/dev/null
 sudo update-desktop-database "${APPDIR}"
 if command -v update-icon-caches > /dev/null; then
   sudo update-icon-caches "${ICONDIR}"
 fi
-{ ! [[ -f "${APPDIR}/mimeapps.list" ]] && echo -e "\n[Default Applications]";
-  echo "application/x-pacscript=pacscript.desktop"; } | sudo tee -a "${APPDIR}/mimeapps.list"
+
+if ! { [[ -f "${APPDIR}/mimeapps.list" ]] && \
+    grep -q '^application/x-pacscript=' "${APPDIR}/mimeapps.list";
+  }; then
+    { ! [[ -f "${APPDIR}/mimeapps.list" ]] && echo -e '\n[Default Applications]';
+      echo 'application/x-pacscript=pacscript.desktop';
+    } | sudo tee -a "${APPDIR}/mimeapps.list" > /dev/null
+fi
 ```
